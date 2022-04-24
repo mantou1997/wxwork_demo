@@ -2,12 +2,11 @@ from django.shortcuts import render, HttpResponse
 from wechatpy.work import WeChatClient
 from django.http import JsonResponse
 from django.views import View
+import logging
 import requests
 import xlrd
 import xlwt
 import json
-import logging
-
 
 # Create your views here.
 class MyExcelView(View):
@@ -46,12 +45,13 @@ class MyExcelView(View):
             # 4.调用企业微信API
             isOk = updateApi(corp_id, secret, wxId, cn_name, content, excelfile)
             if isOk == 'true':
-                return JsonResponse({'message':'用户更新成功'},status=200)
+                #logging.INFO('用户更新成功')
                 print(cn_name + '用户更新成功')
+                return JsonResponse({'message':'用户更新成功'},status=200)
             else:
-                return JsonResponse({'message':'用户更新成功'},status=500)
                 print(cn_name + '用户更新失败')
-        return HttpResponse(name)
+                return JsonResponse({'message':'用户更新成功'},status=500)
+
 
 
 # 2.获取token
