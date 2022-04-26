@@ -1,21 +1,30 @@
-from django.shortcuts import render, HttpResponse
-from wechatpy.work import WeChatClient
-from django.http import JsonResponse
-#from django.views import View
-from rest_framework.views import APIView
-from django.core.cache import cache
-import logging
-import requests
-import xlrd
-import xlwt
 import json
 
-# Create your views here.
-class MyExcelView(APIView):
-    def get(self, request):
-        return HttpResponse('get')
+import requests
+import xlrd
+from django.core.cache import cache
+from django.http import JsonResponse
+from django.shortcuts import HttpResponse
+# from django.views import View
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import action
+from wechatpy.work import WeChatClient
+from .serializer import UserInfoModelSerializer
+from .models import UserInfo
 
-    def post(self, request):
+
+# Create your views here.
+class MyExcelView(ModelViewSet):
+    """视图集"""
+    #这两句代表：查所有、查单一、新增、修改、删除
+    queryset = UserInfo.objects.all()
+    serializer_class = UserInfoModelSerializer
+
+    @action(methods=['post'], detail=False)
+    def myexcel(self, request):
         # 1.获取token
         appid = 'db723212-3835-46a8-96d0-e760114dc0fb'
         secret = '7c625c45-a2b7-40db-a4ed-cc63d34e4d8a'
