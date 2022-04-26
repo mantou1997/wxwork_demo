@@ -3,6 +3,7 @@ from wechatpy.work import WeChatClient
 from django.http import JsonResponse
 #from django.views import View
 from rest_framework.views import APIView
+from django.core.cache import cache
 import logging
 import requests
 import xlrd
@@ -19,6 +20,10 @@ class MyExcelView(APIView):
         appid = 'db723212-3835-46a8-96d0-e760114dc0fb'
         secret = '7c625c45-a2b7-40db-a4ed-cc63d34e4d8a'
         accessToken = getToken(appid, secret)
+
+        # token缓存至内存
+        cache.set('token', accessToken, 60*60*2)
+        #print(cache.get('token'))
 
         # 获取上传的文件对象
         excelfile = request.FILES.get("excelfile")
