@@ -1,7 +1,8 @@
 from django.shortcuts import render, HttpResponse
 from wechatpy.work import WeChatClient
 from django.http import JsonResponse
-from django.views import View
+#from django.views import View
+from rest_framework.views import APIView
 import logging
 import requests
 import xlrd
@@ -9,7 +10,7 @@ import xlwt
 import json
 
 # Create your views here.
-class MyExcelView(View):
+class MyExcelView(APIView):
     def get(self, request):
         return HttpResponse('get')
 
